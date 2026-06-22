@@ -11,3 +11,4 @@ db.sqlite3
 *.log
 *.sqlite3
 .idea/
+.vscode/
