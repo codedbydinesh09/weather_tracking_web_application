@@ -1,0 +1,70 @@
+{% extends "weather_app/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'weather_app/dashboard.css' %}?v=3">
+<script src="https://cdn.jsdelivr.net/npm/globe.gl@2.26.5/dist/globe.gl.min.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <div class="search-container glass-card">
+        <div class="search-input-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input
+                type="text"
+                id="globeSearchBox"
+                class="glass-input"
+                placeholder="Search any city..."
+            >
+            <span class="shortcut-hint">Ctrl+K</span>
+        </div>
+        <div id="globeSuggestions"></div>
+    </div>
+
+    <div class="globe-wrapper">
+        <div id="globeViz"></div>
+    </div>
+
+    <div class="quick-chips">
+        <button class="city-chip" onclick="document.getElementById('globeSearchBox').value='London'; document.getElementById('globeSearchBox').dispatchEvent(new Event('input', { bubbles: true }));">London</button>
+        <button class="city-chip" onclick="document.getElementById('globeSearchBox').value='New York'; document.getElementById('globeSearchBox').dispatchEvent(new Event('input', { bubbles: true }));">New York</button>
+        <button class="city-chip" onclick="document.getElementById('globeSearchBox').value='Tokyo'; document.getElementById('globeSearchBox').dispatchEvent(new Event('input', { bubbles: true }));">Tokyo</button>
+        <button class="city-chip" onclick="document.getElementById('globeSearchBox').value='Mumbai'; document.getElementById('globeSearchBox').dispatchEvent(new Event('input', { bubbles: true }));">Mumbai</button>
+        <button class="city-chip" onclick="document.getElementById('globeSearchBox').value='Sydney'; document.getElementById('globeSearchBox').dispatchEvent(new Event('input', { bubbles: true }));">Sydney</button>
+    </div>
+
+    <div id="weatherPanel" class="hidden-panel">
+        <button class="close-panel-btn" onclick="closeWeatherPanel()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div id="wpContent">
+            Search a city to view weather
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    // Keyboard shortcut for search
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'k') {
+            e.preventDefault();
+            document.getElementById('globeSearchBox').focus();
+        }
+    });
+
+    // We also need to overwrite the way wpContent formats its inner HTML
+    // because dashboard.js likely sets innerHTML directly.
+    // I will intercept the innerHTML update or wait for dashboard.js to load
+    // Actually, it's safer to just let dashboard.js update wpContent,
+    // and provide styles for whatever dashboard.js injects.
+    // Let's modify the WP content observer if dashboard.js overrides styling
+</script>
+<script src="{% static 'weather_app/dashboard.js' %}"></script>
+{% endblock %}

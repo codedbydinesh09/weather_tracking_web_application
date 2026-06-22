@@ -1,0 +1,234 @@
+{% extends "weather_app/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+    .comparison-layout {
+        display: grid;
+        gap: 24px;
+        margin-top: 24px;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .inputs-card {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        position: relative;
+    }
+    
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .input-group:focus-within {
+        z-index: 200;
+    }
+    
+    .input-group label {
+        font-family: 'Sora', sans-serif;
+        font-weight: 600;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+    }
+    
+    .controls-card {
+        display: flex;
+        gap: 24px;
+        align-items: flex-end;
+        flex-wrap: wrap;
+    }
+
+    /* Dark themed select dropdowns */
+    .controls-card select.glass-input,
+    select#parameterSelect,
+    select#startDateTime,
+    select#endDateTime {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: rgba(15, 23, 42, 0.95);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2338BDF8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 16px;
+        color: #e2e8f0;
+        padding: 12px 40px 12px 16px;
+        font-size: 0.95rem;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .controls-card select.glass-input:hover,
+    select#parameterSelect:hover,
+    select#startDateTime:hover,
+    select#endDateTime:hover {
+        border-color: rgba(56, 189, 248, 0.5);
+        background-color: rgba(15, 23, 60, 0.98);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+    }
+
+    .controls-card select.glass-input:focus,
+    select#parameterSelect:focus,
+    select#startDateTime:focus,
+    select#endDateTime:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+        background-color: rgba(15, 23, 60, 0.98);
+    }
+
+    /* Style the native dropdown options */
+    select#parameterSelect option,
+    select#startDateTime option,
+    select#endDateTime option {
+        background-color: #0f172a;
+        color: #e2e8f0;
+        padding: 10px 16px;
+    }
+    
+    .chart-card {
+        min-height: 400px;
+        padding: 24px;
+        position: relative;
+    }
+    
+    .chart-container {
+        position: relative;
+        height: 350px;
+        width: 100%;
+        margin-top: 24px;
+    }
+    
+    /* Autocomplete Suggestions */
+    .suggestions-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, 0.95); /* Dark slate background */
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(56, 189, 248, 0.2); /* Light blue border */
+        border-radius: var(--radius-lg);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 100; /* Increased z-index to stay above other inputs */
+        margin-top: 8px;
+        list-style: none;
+        padding: 0;
+        color: #e2e8f0;
+    }
+    
+    .suggestions-list li {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.2s ease;
+        color: #cbd5e1;
+    }
+
+    .suggestions-list li strong {
+        color: #f8fafc;
+        font-weight: 600;
+    }
+
+    .suggestions-list li small {
+        color: #94a3b8;
+        margin-left: 8px;
+    }
+    
+    .suggestions-list li:last-child {
+        border-bottom: none;
+    }
+
+    .suggestions-list li:hover {
+        background: rgba(56, 189, 248, 0.15); /* Light blue hover background */
+        color: #38bdf8;
+    }
+
+    .suggestions-list li:hover strong {
+        color: #38bdf8;
+    }
+
+    @media (max-width: 768px) {
+        .inputs-card { grid-template-columns: 1fr; }
+        .controls-card { flex-direction: column; align-items: stretch; }
+        #compareBtn { width: 100%; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="comparison-layout">
+    
+    <div class="glass-card inputs-card" style="padding: 24px;">
+        <div class="input-group">
+            <label>CITY A</label>
+            <input type="text" id="cityA" class="glass-input" placeholder="Search City A..." autocomplete="off">
+            <ul id="cityASuggestions" class="suggestions-list hidden"></ul>
+        </div>
+        <div class="input-group">
+            <label>CITY B</label>
+            <input type="text" id="cityB" class="glass-input" placeholder="Search City B..." autocomplete="off">
+            <ul id="cityBSuggestions" class="suggestions-list hidden"></ul>
+        </div>
+    </div>
+    
+    <div class="glass-card controls-card" style="padding: 24px;">
+        <div class="input-group" style="flex: 1;">
+            <label>PARAMETER</label>
+            <select id="parameterSelect" class="glass-input" onchange="if(typeof updateChart === 'function') updateChart();">
+                <option value="temp">Temperature (°C)</option>
+                <option value="humidity">Humidity (%)</option>
+                <option value="wind_speed">Wind Speed (m/s)</option>
+                <option value="pressure">Pressure (hPa)</option>
+            </select>
+        </div>
+        
+        <div class="input-group" style="flex: 1;">
+            <label>START DATE/TIME</label>
+            <select id="startDateTime" class="glass-input" onchange="if(typeof updateChart === 'function') updateChart();"></select>
+        </div>
+        
+        <div class="input-group" style="flex: 1;">
+            <label>END DATE/TIME</label>
+            <select id="endDateTime" class="glass-input" onchange="if(typeof updateChart === 'function') updateChart();"></select>
+        </div>
+        
+        <button class="btn-primary" id="compareBtn" onclick="if(typeof fetchComparisonData === 'function') fetchComparisonData();">
+            <i class="fa-solid fa-code-compare"></i> Compare
+        </button>
+    </div>
+    
+    <div class="glass-card chart-card">
+        <h3 style="display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-chart-line" style="color: var(--accent-blue);"></i> Comparison Data
+        </h3>
+        <div class="chart-container">
+            <canvas id="comparisonChart"></canvas>
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'weather_app/comparison.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherPro</title>
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'weather_app/style.css' %}?v=3">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <nav class="top-nav">
+        <div class="nav-left">
+            <a href="{% url 'dashboard' %}" class="nav-logo">
+                <i class="fa-solid fa-cloud-sun-rain" style="color: var(--accent-blue);"></i>
+                WeatherPro
+            </a>
+        </div>
+
+        <div class="nav-center">
+            <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <i class="fa-solid fa-border-all"></i> Dashboard
+            </a>
+            <a href="{% url 'comparison' %}" class="nav-link {% if request.resolver_match.url_name == 'comparison' %}active{% endif %}">
+                <i class="fa-solid fa-code-compare"></i> Comparison
+            </a>
+            <a href="{% url 'route_weather' %}" class="nav-link {% if request.resolver_match.url_name == 'route_weather' %}active{% endif %}">
+                <i class="fa-solid fa-route"></i> Route Weather
+            </a>
+            <a href="{% url 'chatbot' %}" class="nav-link {% if request.resolver_match.url_name == 'chatbot' %}active{% endif %}">
+                <i class="fa-solid fa-robot"></i> AI Chatbot
+            </a>
+        </div>
+
+        <div class="nav-right">
+            <a href="{% url 'profile' %}" class="btn-icon" title="Profile">
+                <i class="fa-regular fa-user"></i>
+            </a>
+            <a href="{% url 'logout' %}" class="btn-icon" title="Logout">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <div id="toastContainer" class="toast-container"></div>
+    <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
+
+    {% block extra_scripts %}{% endblock %}
+
+    <script>
+        // Simple toast function to be globally available
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if(!container) return;
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            let icon = 'fa-circle-info';
+            let color = 'var(--accent-blue)';
+            if(type === 'error') { icon = 'fa-circle-xmark'; color = 'var(--accent-coral)'; }
+            else if(type === 'success') { icon = 'fa-circle-check'; color = 'var(--accent-mint)'; }
+            
+            toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color}"></i> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

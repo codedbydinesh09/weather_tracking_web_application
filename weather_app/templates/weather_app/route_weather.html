@@ -1,0 +1,363 @@
+{% extends "weather_app/base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<style>
+    .rw-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    /* Top Section */
+    .rw-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 24px;
+    }
+    
+    .rw-title h2 {
+        font-size: 2rem;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .rw-title p {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        margin: 0;
+    }
+    
+    .distance-badge {
+        background: rgba(56, 189, 248, 0.1);
+        color: var(--accent-blue);
+        padding: 8px 16px;
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    /* Inputs */
+    .route-inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+    
+    /* Swap btn removed */
+    
+    /* Controls */
+    .route-controls {
+        display: flex;
+        gap: 24px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+    
+    /* Quick Routes */
+    .quick-routes {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    /* Autocomplete suggestion list — dark theme matching dashboard */
+    .route-inputs .suggestions-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, 0.97);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        max-height: 260px;
+        overflow-y: auto;
+        z-index: 200;
+        margin-top: 6px;
+        list-style: none;
+        padding: 0;
+        color: #e2e8f0;
+    }
+
+    .route-inputs .suggestions-list li {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.2s ease;
+        color: #cbd5e1;
+    }
+
+    .route-inputs .suggestions-list li strong { color: #f8fafc; font-weight: 600; }
+    .route-inputs .suggestions-list li small  { color: #94a3b8; margin-left: 8px; }
+    .route-inputs .suggestions-list li:last-child { border-bottom: none; }
+
+    .route-inputs .suggestions-list li:hover {
+        background: rgba(56,189,248,0.15);
+        color: #38bdf8;
+    }
+    .route-inputs .suggestions-list li:hover strong { color: #38bdf8; }
+
+    /* Input wrapper needs relative positioning for the dropdown */
+    .city-input-wrapper {
+        position: relative;
+        width: 100%;
+    }
+    
+    .quick-routes-label {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+    
+    .qr-chip {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        padding: 6px 12px;
+        border-radius: var(--radius-full);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: #e2e8f0;
+    }
+    
+    .qr-chip:hover {
+        background: rgba(56, 189, 248, 0.2);
+        color: #38bdf8;
+        border-color: rgba(56, 189, 248, 0.6);
+    }
+    
+    /* Map */
+    .map-container {
+        height: 500px;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--glass-border);
+    }
+    
+    #map {
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    
+    /* Checkpoints Grid */
+    .checkpoints-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+    }
+    
+    .checkpoint-card {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .cp-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .cp-badge {
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .cp-badge.start { background: rgba(52,211,153,0.15); color: var(--accent-mint); }
+    .cp-badge.mid { background: rgba(251,191,36,0.15); color: #F59E0B; }
+    .cp-badge.dest { background: rgba(251,113,133,0.15); color: var(--accent-coral); }
+    
+    .cp-city {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+    
+    .cp-weather {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .cp-temp {
+        font-size: 2.5rem;
+        font-weight: 800;
+    }
+    
+    .cp-stats {
+        display: flex;
+        gap: 16px;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+    }
+    
+    .cp-stats span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    /* Accordions */
+    .accordion {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius-lg);
+        margin-bottom: 16px;
+        overflow: hidden;
+    }
+    
+    .accordion-header {
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: background 0.2s;
+    }
+    
+    .accordion-header:hover {
+        background: rgba(255,255,255,0.8);
+    }
+    
+    .accordion-content {
+        padding: 0 24px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    
+    .accordion.open .accordion-content {
+        padding: 0 24px 24px;
+        max-height: 1000px;
+    }
+    
+    .accordion.open .accordion-icon {
+        transform: rotate(180deg);
+    }
+    
+    .forecast-row {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding-bottom: 12px;
+    }
+    
+    .forecast-card {
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 16px;
+        padding: 16px;
+        min-width: 140px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        text-align: center;
+        color: #f8fafc;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="rw-layout">
+
+    <!-- Top Section -->
+    <div class="glass-card" style="padding: 32px;">
+        <div class="rw-header">
+            <div class="rw-title">
+                <h2>
+                    <div style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple)); padding: 8px; border-radius: 12px; display: inline-flex;">
+                        <i class="fa-solid fa-route" style="color: white; font-size: 1.2rem;"></i>
+                    </div>
+                    Route Weather Forecast
+                </h2>
+                <p>Visualize weather conditions across your entire journey — checkpoint by checkpoint</p>
+            </div>
+            <div class="distance-badge hidden" id="distanceBadge">
+                <i class="fa-solid fa-arrow-right"></i> <span id="totalDistance">--</span> km
+            </div>
+        </div>
+        
+        <div class="route-inputs">
+            <div class="city-input-wrapper">
+                <input type="text" id="startLocation" class="glass-input" placeholder="Start location (e.g., Chennai)" autocomplete="off">
+            </div>
+            <div class="city-input-wrapper">
+                <input type="text" id="endLocation" class="glass-input" placeholder="Destination (e.g., Coimbatore)" autocomplete="off">
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div class="quick-routes">
+                <span class="quick-routes-label">Quick routes:</span>
+                <button class="qr-chip" onclick="setQuickRoute('Chennai', 'Coimbatore')">Chennai → Coimbatore</button>
+                <button class="qr-chip" onclick="setQuickRoute('Mumbai', 'Pune')">Mumbai → Pune</button>
+                <button class="qr-chip" onclick="setQuickRoute('Delhi', 'Agra')">Delhi → Agra</button>
+                <button class="qr-chip" onclick="setQuickRoute('Bangalore', 'Mysore')">Bangalore → Mysore</button>
+            </div>
+            
+            <div class="route-controls">
+                <button id="planRouteBtn" class="btn-primary" onclick="planRoute()">
+                    <i class="fa-solid fa-location-arrow"></i> Plan Route
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Map Section -->
+    <div id="routeMapSection" class="glass-card hidden" style="padding: 24px;">
+        <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-map-location-dot" style="color: var(--accent-blue);"></i> Route Map
+        </h3>
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+    
+    <!-- Weather Details -->
+    <div id="routeWeatherSection" class="glass-card hidden" style="padding: 24px;">
+        <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-cloud-sun" style="color: var(--accent-blue);"></i> Checkpoint Weather
+        </h3>
+        <div id="weatherCheckpoints" class="checkpoints-grid">
+            <p style="color: var(--text-secondary);">Plan a route to see checkpoint weather.</p>
+        </div>
+    </div>
+    
+    <!-- Forecast Section -->
+    <div id="routeForecastSection" class="glass-card hidden" style="padding: 24px;">
+        <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-calendar-days" style="color: var(--accent-blue);"></i> City Forecasts
+        </h3>
+        <div id="rwForecastContent">
+            <p style="color: var(--text-secondary);">Plan a route to see forecasts.</p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'weather_app/route_weather.js' %}"></script>
+{% endblock %}
