@@ -34,7 +34,7 @@
     }
     
     .distance-badge {
-        background: rgba(56, 189, 248, 0.1);
+        background: #5483B3;
         color: var(--accent-blue);
         padding: 8px 16px;
         border-radius: var(--radius-full);
@@ -79,37 +79,37 @@
         top: 100%;
         left: 0;
         right: 0;
-        background: rgba(15, 23, 42, 0.97);
+        background: #021024;
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(56, 189, 248, 0.2);
+        border: 1px solid rgba(193, 232, 255, 0.15);
         border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        box-shadow: 0 10px 30px rgba(2,16,36,0.35);
         max-height: 260px;
         overflow-y: auto;
         z-index: 200;
         margin-top: 6px;
         list-style: none;
         padding: 0;
-        color: #e2e8f0;
+        color: #FFFFFF;
     }
 
     .route-inputs .suggestions-list li {
         padding: 12px 20px;
         cursor: pointer;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        border-bottom: 1px solid rgba(193,232,255,0.15);
         transition: all 0.2s ease;
-        color: #cbd5e1;
+        color: #C1E8FF;
     }
 
-    .route-inputs .suggestions-list li strong { color: #f8fafc; font-weight: 600; }
-    .route-inputs .suggestions-list li small  { color: #94a3b8; margin-left: 8px; }
+    .route-inputs .suggestions-list li strong { color: #FFFFFF; font-weight: 600; }
+    .route-inputs .suggestions-list li small  { color: #7DA0CA; margin-left: 8px; }
     .route-inputs .suggestions-list li:last-child { border-bottom: none; }
 
     .route-inputs .suggestions-list li:hover {
-        background: rgba(56,189,248,0.15);
-        color: #38bdf8;
+        background: #5483B3;
+        color: #C1E8FF;
     }
-    .route-inputs .suggestions-list li:hover strong { color: #38bdf8; }
+    .route-inputs .suggestions-list li:hover strong { color: #C1E8FF; }
 
     /* Input wrapper needs relative positioning for the dropdown */
     .city-input-wrapper {
@@ -124,20 +124,20 @@
     }
     
     .qr-chip {
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid rgba(56, 189, 248, 0.3);
+        background: #021024;
+        border: 1px solid rgba(193, 232, 255, 0.15);
         padding: 6px 12px;
         border-radius: var(--radius-full);
         font-size: 0.85rem;
         cursor: pointer;
         transition: all 0.2s;
-        color: #e2e8f0;
+        color: #FFFFFF;
     }
     
     .qr-chip:hover {
-        background: rgba(56, 189, 248, 0.2);
-        color: #38bdf8;
-        border-color: rgba(56, 189, 248, 0.6);
+        background: rgba(193, 232, 255, 0.15);
+        color: #C1E8FF;
+        border-color: #C1E8FF;
     }
     
     /* Map */
@@ -183,9 +183,9 @@
         letter-spacing: 0.05em;
     }
     
-    .cp-badge.start { background: rgba(52,211,153,0.15); color: var(--accent-mint); }
-    .cp-badge.mid { background: rgba(251,191,36,0.15); color: #F59E0B; }
-    .cp-badge.dest { background: rgba(251,113,133,0.15); color: var(--accent-coral); }
+    .cp-badge.start { background: rgba(125,160,202,0.2); color: var(--accent-mint); }
+    .cp-badge.mid   { background: rgba(193,232,255,0.15); color: #C1E8FF; }
+    .cp-badge.dest  { background: rgba(5,38,89,0.5); color: #C1E8FF; }
     
     .cp-city {
         font-size: 1.2rem;
@@ -264,8 +264,8 @@
     }
     
     .forecast-card {
-        background: rgba(15, 23, 42, 0.7);
-        border: 1px solid rgba(56, 189, 248, 0.2);
+        background: #021024;
+        border: 1px solid rgba(193, 232, 255, 0.15);
         border-radius: 16px;
         padding: 16px;
         min-width: 140px;
@@ -274,7 +274,7 @@
         align-items: center;
         gap: 8px;
         text-align: center;
-        color: #f8fafc;
+        color: #FFFFFF;
     }
 </style>
 {% endblock %}

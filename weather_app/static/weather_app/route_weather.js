@@ -202,7 +202,7 @@ const RouteWeather = (() => {
 
         // GeoJSON uses [lon, lat] → Leaflet needs [lat, lon]
         const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
-        polyline = L.polyline(coords, { color: '#38BDF8', weight: 5, opacity: 0.8 }).addTo(map);
+        polyline = L.polyline(coords, { color: '#C1E8FF', weight: 5, opacity: 0.8 }).addTo(map);
         map.fitBounds(polyline.getBounds(), { padding: [50, 50] });
 
         if (checkpointsData && checkpointsData.length > 0) {
@@ -283,7 +283,7 @@ const RouteWeather = (() => {
                         <div style="font-size:1.5rem; font-weight:700; color:var(--accent-blue);">
                             ${temp}°
                         </div>
-                        <div style="font-size:0.8rem; color:#cbd5e1;">
+                        <div style="font-size:0.8rem; color:#C1E8FF;">
                             <i class="fa-solid fa-cloud-rain"></i> ${Math.round(rain)}%
                         </div>
                     </div>

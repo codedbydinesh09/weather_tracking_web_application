@@ -1,131 +1,260 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Weather App</title>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: black;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        #globeViz {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
-
-        #weatherInfo {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-
-            width: 260px;
-
-            background: rgba(0, 0, 0, 0.5);
-
-            padding: 20px;
-
-            border-radius: 15px;
-
-            color: white;
-
-            backdrop-filter: blur(10px);
-
-            z-index: 10;
-
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            width: 600px;
-            text-align: center;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
+<!DOCTYPE html>
+
+<html>
+
+
+
+<head>
+
+    <title>Weather App</title>
+
+
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: black;
+
+            margin: 0;
+
+            padding: 0;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            height: 100vh;
+
+        }
+
+
+
+        #globeViz {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            z-index: -1;
+
+        }
+
+
+
+        #weatherInfo {
+
+            position: absolute;
+
+            top: 30px;
+
+            right: 30px;
+
+
+
+            width: 260px;
+
+
+
+            background: rgba(2, 16, 36, 0.35);
+
+
+
+            padding: 20px;
+
+
+
+            border-radius: 15px;
+
+
+
+            color: white;
+
+
+
+            backdrop-filter: blur(10px);
+
+
+
+            z-index: 10;
+
+
+
+            font-family: Arial, sans-serif;
+
+        }
+
+
+
+        .container {
+
+            background: rgba(193, 232, 255, 0.15);
+
+            backdrop-filter: blur(10px);
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow: 0 0 15px rgba(2, 16, 36, 0.35);
+
+            width: 600px;
+
+            text-align: center;
+
+        }
+
+
+
+        h1 {
+
+            margin-bottom: 10px;
+
+        }
+
+
+
 <truncated 4539 bytes>
-ElementById("cityInput").value;
-
-            if (!city) {
-                alert("Enter city name");
-                return;
-            }
-
-            try {
-
-                const response = await fetch(`/api/weather/?city=${city}`);
-
-                const data = await response.json();
-
-                if (data.error) {
-                    alert(data.error);
-                    return;
-                }
-                document.getElementById("weatherInfo").innerHTML = `
-    <h2>${data.city}</h2>
-
-    <h1>${data.temperature}°C</h1>
-
-    <p>${data.description}</p>
-
-    <p>Humidity: ${data.humidity}%</p>
-
-    <p>Wind: ${data.wind_speed} m/s</p>
-
-    <p>Pressure: ${data.pressure} hPa</p>
-
-    <img src="https://openweathermap.org/img/wn/${data.icon}@2x.png">`;
-
-                world.pointOfView(
-                    {
-                        lat: data.lat,
-                        lng: data.lon,
-                        altitude: 1.5
-                    },
-                    2500
-                );
-                world.labelsData([
-                    {
-                        lat: data.lat,
-                        lng: data.lon,
-                        text: city
-                    }
-                ]);
-
-                world.labelText('text');
-
-                world.labelSize(2);
-
-                world.labelDotRadius(0.5);
-
-                world.labelColor(() => 'yellow');
-
-            } catch (error) {
-                console.log(error);
-                alert("Error fetching weather");
-            }
-
-        });
-
-    </script>
-</body>
-
+ElementById("cityInput").value;
+
+
+
+            if (!city) {
+
+                alert("Enter city name");
+
+                return;
+
+            }
+
+
+
+            try {
+
+
+
+                const response = await fetch(`/api/weather/?city=${city}`);
+
+
+
+                const data = await response.json();
+
+
+
+                if (data.error) {
+
+                    alert(data.error);
+
+                    return;
+
+                }
+
+                document.getElementById("weatherInfo").innerHTML = `
+
+    <h2>${data.city}</h2>
+
+
+
+    <h1>${data.temperature}°C</h1>
+
+
+
+    <p>${data.description}</p>
+
+
+
+    <p>Humidity: ${data.humidity}%</p>
+
+
+
+    <p>Wind: ${data.wind_speed} m/s</p>
+
+
+
+    <p>Pressure: ${data.pressure} hPa</p>
+
+
+
+    <img src="https://openweathermap.org/img/wn/${data.icon}@2x.png">`;
+
+
+
+                world.pointOfView(
+
+                    {
+
+                        lat: data.lat,
+
+                        lng: data.lon,
+
+                        altitude: 1.5
+
+                    },
+
+                    2500
+
+                );
+
+                world.labelsData([
+
+                    {
+
+                        lat: data.lat,
+
+                        lng: data.lon,
+
+                        text: city
+
+                    }
+
+                ]);
+
+
+
+                world.labelText('text');
+
+
+
+                world.labelSize(2);
+
+
+
+                world.labelDotRadius(0.5);
+
+
+
+                world.labelColor(() => 'yellow');
+
+
+
+            } catch (error) {
+
+                console.log(error);
+
+                alert("Error fetching weather");
+
+            }
+
+
+
+        });
+
+
+
+    </script>
+
+</body>
+
+
+
 </html>

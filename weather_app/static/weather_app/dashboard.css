@@ -44,13 +44,13 @@
     height: 60px;
     font-size: 1.1rem;
     border-radius: var(--radius-full);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 40px rgba(2, 16, 36, 0.35);
 }
 
 .shortcut-hint {
     position: absolute;
     right: 20px;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(193, 232, 255, 0.15);
     padding: 4px 8px;
     border-radius: 6px;
     font-size: 0.8rem;
@@ -63,34 +63,34 @@
     top: 70px;
     left: 0;
     right: 0;
-    background: rgba(15, 23, 42, 0.95);
+    background: #021024;
     /* Dark slate background */
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    border: 1px solid rgba(193, 232, 255, 0.15);
     /* Light blue border */
     border-radius: var(--radius-lg);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px rgba(2, 16, 36, 0.35);
     max-height: 300px;
     overflow-y: auto;
     display: none;
-    color: #e2e8f0;
+    color: #FFFFFF;
 }
 
 .suggestion-item {
     padding: 12px 20px;
     cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(193, 232, 255, 0.15);
     transition: all 0.2s ease;
-    color: #cbd5e1;
+    color: #C1E8FF;
 }
 
 .suggestion-item strong {
-    color: #f8fafc;
+    color: #FFFFFF;
     font-weight: 600;
 }
 
 .suggestion-item small {
-    color: #94a3b8;
+    color: #7DA0CA;
     margin-left: 8px;
 }
 
@@ -99,13 +99,13 @@
 }
 
 .suggestion-item:hover {
-    background: rgba(56, 189, 248, 0.15);
+    background: #5483B3;
     /* Light blue hover background */
-    color: #38bdf8;
+    color: #C1E8FF;
 }
 
 .suggestion-item:hover strong {
-    color: #38bdf8;
+    color: #C1E8FF;
 }
 
 /* Globe Container */
@@ -169,7 +169,7 @@
     color: var(--text-primary);
     cursor: pointer;
     transition: var(--transition-smooth);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 10px rgba(2, 16, 36, 0.35);
 }
 
 .city-chip:hover {
@@ -177,7 +177,7 @@
     color: white;
     border-color: var(--accent-blue);
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(56, 189, 248, 0.3);
+    box-shadow: 0 6px 15px rgba(193, 232, 255, 0.15);
 }
 
 /* Weather Slide-in Card */
@@ -186,13 +186,13 @@
     right: 24px;
     top: 100px;
     width: 380px;
-    background: rgba(15, 23, 42, 0.85);
+    background: #021024;
     /* Dark slate background */
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(193, 232, 255, 0.15);
     border-radius: 24px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(2, 16, 36, 0.35);
     padding: 32px 24px;
     transition: right 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
     z-index: 100;
@@ -210,9 +210,9 @@
 }
 
 .panel-chip {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #94a3b8;
+    background: rgba(193, 232, 255, 0.15);
+    border: 1px solid rgba(193, 232, 255, 0.15);
+    color: #7DA0CA;
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 0.75rem;
@@ -224,9 +224,9 @@
 }
 
 .panel-chip:hover {
-    background: rgba(56, 189, 248, 0.2);
-    color: #38bdf8;
-    border-color: rgba(56, 189, 248, 0.4);
+    background: rgba(193, 232, 255, 0.15);
+    color: #C1E8FF;
+    border-color: rgba(193, 232, 255, 0.15);
 }
 
 /* Weather Card Layout */
@@ -243,7 +243,7 @@
 }
 
 .live-badge {
-    background: rgba(52, 211, 153, 0.15);
+    background: #7DA0CA;
     color: var(--accent-mint);
     padding: 4px 10px;
     border-radius: var(--radius-full);
@@ -288,7 +288,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     gap: 12px;
     margin-top: 10px;
-    background: rgba(255, 255, 255, 0.4);
+    background: #052659;
     padding: 16px;
     border-radius: 16px;
 }
@@ -330,16 +330,16 @@
 @keyframes pulse {
     0% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+        box-shadow: 0 0 0 0 rgba(125, 160, 202, 0.7);
     }
 
     70% {
         transform: scale(1);
-        box-shadow: 0 0 0 6px rgba(52, 211, 153, 0);
+        box-shadow: 0 0 0 6px rgba(125, 160, 202, 0);
     }
 
     100% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
+        box-shadow: 0 0 0 0 rgba(125, 160, 202, 0);
     }
 }

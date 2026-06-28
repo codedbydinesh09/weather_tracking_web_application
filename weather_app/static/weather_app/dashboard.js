@@ -24,9 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (globeEl) {
         globe = Globe()
             (globeEl)
-            .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
             .backgroundColor('rgba(0,0,0,0)')
+            .showGlobe(true)
+            .globeColor('#052659')
+            .atmosphereColor('rgba(193,232,255,0.4)')
+            .atmosphereAltitude(0.15)
             .pointOfView({ lat: 20, lng: 0, altitude: 2 });
+            
+        fetch('https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson')
+            .then(res => res.json())
+            .then(countries => {
+                globe.polygonsData(countries.features)
+                     .polygonCapColor(() => '#7DA0CA')
+                     .polygonSideColor(() => 'rgba(125, 160, 202, 0.2)')
+                     .polygonStrokeColor(() => '#021024');
+            });
             
         globe.controls().autoRotate = true;
         globe.controls().autoRotateSpeed = 1.5;
@@ -91,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             globe.pointOfView({ lat: lat, lng: lon, altitude: 1.5 }, 1500);
             
             // Add a ring/marker
-            globe.ringsData([{ lat: lat, lng: lon, color: '#38BDF8' }])
+            globe.ringsData([{ lat: lat, lng: lon, color: '#C1E8FF' }])
                  .ringColor('color')
                  .ringMaxRadius(5)
                  .ringPropagationSpeed(3)
@@ -120,39 +132,39 @@ document.addEventListener('DOMContentLoaded', () => {
             
             wpContent.innerHTML = `
                 <div style="font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 4px;">${data.city}</div>
-                <div style="font-size: 0.8rem; color: #38bdf8; font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 24px;">
-                    <span style="display:inline-block; width:8px; height:8px; background:#38bdf8; border-radius:50%; animation: pulse 2s infinite;"></span>
+                <div style="font-size: 0.8rem; color: #C1E8FF; font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 24px;">
+                    <span style="display:inline-block; width:8px; height:8px; background:#C1E8FF; border-radius:50%; animation: pulse 2s infinite;"></span>
                     Live Weather Tracking
                 </div>
 
-                <div style="background: rgba(255, 255, 255, 0.05); border-radius: 20px; padding: 24px; margin-bottom: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="background: rgba(193, 232, 255, 0.15); border-radius: 20px; padding: 24px; margin-bottom: 16px; border: 1px solid rgba(193, 232, 255, 0.15);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                         <div style="font-size: 3.5rem; font-weight: 800; color: #fff; line-height: 1;">${temp}°C</div>
                         ${iconUrl ? `<img src="${iconUrl}" width="70" height="70" alt="weather icon" style="filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">` : ''}
                     </div>
-                    <div style="font-size: 1rem; color: #cbd5e1; text-transform: capitalize; font-weight: 500;">${data.description}</div>
+                    <div style="font-size: 1rem; color: #C1E8FF; text-transform: capitalize; font-weight: 500;">${data.description}</div>
                 </div>
 
                 <div style="display: flex; gap: 12px; margin-bottom: 16px;">
-                    <div style="flex: 1; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="flex: 1; background: rgba(193, 232, 255, 0.15); padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; color: #C1E8FF; border: 1px solid rgba(193, 232, 255, 0.15);">
                         <i class="fa-regular fa-calendar"></i> ${data.date}
                     </div>
-                    <div style="flex: 1; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.1);">
+                    <div style="flex: 1; background: rgba(193, 232, 255, 0.15); padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.9rem; color: #C1E8FF; border: 1px solid rgba(193, 232, 255, 0.15);">
                         <i class="fa-regular fa-clock"></i> ${data.time}
                     </div>
                 </div>
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px;">
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 16px 10px; border-radius: 16px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1);">
-                        <div style="color: #94a3b8; font-size: 0.75rem; margin-bottom: 8px; text-transform: uppercase; font-weight: 600;"><i class="fa-solid fa-droplet"></i> Humidity</div>
+                    <div style="background: rgba(193, 232, 255, 0.15); padding: 16px 10px; border-radius: 16px; text-align: center; border: 1px solid rgba(193, 232, 255, 0.15);">
+                        <div style="color: #7DA0CA; font-size: 0.75rem; margin-bottom: 8px; text-transform: uppercase; font-weight: 600;"><i class="fa-solid fa-droplet"></i> Humidity</div>
                         <div style="font-size: 1.1rem; font-weight: 700; color: #fff;">${data.humidity}%</div>
                     </div>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 16px 10px; border-radius: 16px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1);">
-                        <div style="color: #94a3b8; font-size: 0.75rem; margin-bottom: 8px; text-transform: uppercase; font-weight: 600;"><i class="fa-solid fa-wind"></i> Wind</div>
+                    <div style="background: rgba(193, 232, 255, 0.15); padding: 16px 10px; border-radius: 16px; text-align: center; border: 1px solid rgba(193, 232, 255, 0.15);">
+                        <div style="color: #7DA0CA; font-size: 0.75rem; margin-bottom: 8px; text-transform: uppercase; font-weight: 600;"><i class="fa-solid fa-wind"></i> Wind</div>
                         <div style="font-size: 1.1rem; font-weight: 700; color: #fff;">${data.wind_speed}<span style="font-size: 0.7rem; font-weight:normal;">m/s</span></div>
                     </div>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 16px 10px; border-radius: 16px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.1);">
-                        <div style="color: #94a3b8; font-size: 0.75rem; margin-bottom: 8px; text-transform: uppercase; font-weight: 600;"><i class="fa-solid fa-gauge"></i> Pressure</div>
+                    <div style="background: rgba(193, 232, 255, 0.15); padding: 16px 10px; border-radius: 16px; text-align: center; border: 1px solid rgba(193, 232, 255, 0.15);">
+                        <div style="color: #7DA0CA; font-size: 0.75rem; margin-bottom: 8px; text-transform: uppercase; font-weight: 600;"><i class="fa-solid fa-gauge"></i> Pressure</div>
                         <div style="font-size: 1.1rem; font-weight: 700; color: #fff;">${data.pressure}<span style="font-size: 0.7rem; font-weight:normal;">hPa</span></div>
                     </div>
                 </div>

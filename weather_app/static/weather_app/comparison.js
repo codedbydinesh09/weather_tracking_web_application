@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    Chart.defaults.color = '#94A3B8';
+    Chart.defaults.color = '#7DA0CA';
     Chart.defaults.font.family = "'Inter', sans-serif";
-    Chart.defaults.borderColor = 'rgba(255,255,255,0.05)';
+    Chart.defaults.borderColor = 'rgba(193,232,255,0.15)';
 
     setupCityAutocomplete('cityA', 'cityASuggestions');
     setupCityAutocomplete('cityB', 'cityBSuggestions');
@@ -144,14 +144,14 @@ window.updateChart = function() {
         comparisonChart.destroy();
     }
 
-    // Gradients for dark theme
+    // Gradients for blue palette theme
     const gradientA = ctx.createLinearGradient(0, 0, 0, 400);
-    gradientA.addColorStop(0, 'rgba(56, 189, 248, 0.5)');
-    gradientA.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+    gradientA.addColorStop(0, 'rgba(193, 232, 255, 0.3)');
+    gradientA.addColorStop(1, 'rgba(193, 232, 255, 0.0)');
 
     const gradientB = ctx.createLinearGradient(0, 0, 0, 400);
-    gradientB.addColorStop(0, 'rgba(167, 139, 250, 0.5)');
-    gradientB.addColorStop(1, 'rgba(167, 139, 250, 0.0)');
+    gradientB.addColorStop(0, 'rgba(125, 160, 202, 0.3)');
+    gradientB.addColorStop(1, 'rgba(125, 160, 202, 0.0)');
 
     comparisonChart = new Chart(ctx, {
         type: 'line',
@@ -161,13 +161,13 @@ window.updateChart = function() {
                 {
                     label: document.getElementById('cityA').value,
                     data: filteredA,
-                    borderColor: '#38BDF8',
+                    borderColor: '#C1E8FF',
                     backgroundColor: gradientA,
                     borderWidth: 3,
                     tension: 0.4,
                     fill: true,
-                    pointBackgroundColor: '#11253E',
-                    pointBorderColor: '#38BDF8',
+                    pointBackgroundColor: '#021024',
+                    pointBorderColor: '#C1E8FF',
                     pointBorderWidth: 2,
                     pointRadius: 4,
                     pointHoverRadius: 6
@@ -175,13 +175,13 @@ window.updateChart = function() {
                 {
                     label: document.getElementById('cityB').value,
                     data: filteredB,
-                    borderColor: '#A78BFA',
+                    borderColor: '#7DA0CA',
                     backgroundColor: gradientB,
                     borderWidth: 3,
                     tension: 0.4,
                     fill: true,
-                    pointBackgroundColor: '#11253E',
-                    pointBorderColor: '#A78BFA',
+                    pointBackgroundColor: '#021024',
+                    pointBorderColor: '#7DA0CA',
                     pointBorderWidth: 2,
                     pointRadius: 4,
                     pointHoverRadius: 6
@@ -196,10 +196,10 @@ window.updateChart = function() {
                 tooltip: {
                     mode: 'index',
                     intersect: false,
-                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                    titleColor: '#F8FAFC',
-                    bodyColor: '#F8FAFC',
-                    borderColor: 'rgba(255,255,255,0.1)',
+                    backgroundColor: '#021024',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                    borderColor: 'rgba(193,232,255,0.25)',
                     borderWidth: 1
                 }
             },
@@ -208,7 +208,7 @@ window.updateChart = function() {
                     grid: { display: false }
                 },
                 y: {
-                    grid: { color: 'rgba(255,255,255,0.05)' }
+                    grid: { color: 'rgba(193,232,255,0.15)' }
                 }
             }
         }

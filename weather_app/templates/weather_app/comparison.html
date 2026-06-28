@@ -11,6 +11,7 @@
         max-width: 1200px;
         margin-left: auto;
         margin-right: auto;
+        overflow: visible;
     }
     
     .inputs-card {
@@ -18,6 +19,8 @@
         grid-template-columns: 1fr 1fr;
         gap: 24px;
         position: relative;
+        z-index: 10;
+        overflow: visible;
     }
     
     .input-group {
@@ -29,7 +32,7 @@
     }
 
     .input-group:focus-within {
-        z-index: 200;
+        z-index: 9999;
     }
     
     .input-group label {
@@ -55,20 +58,20 @@
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        background-color: rgba(15, 23, 42, 0.95);
+        background-color: #021024;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2338BDF8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 16px center;
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(56, 189, 248, 0.2);
+        border: 1px solid rgba(193, 232, 255, 0.15);
         border-radius: 16px;
-        color: #e2e8f0;
+        color: #FFFFFF;
         padding: 12px 40px 12px 16px;
         font-size: 0.95rem;
         font-family: 'Inter', sans-serif;
         cursor: pointer;
         transition: all 0.2s ease;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 15px rgba(2, 16, 36, 0.35);
         outline: none;
         width: 100%;
         box-sizing: border-box;
@@ -78,26 +81,26 @@
     select#parameterSelect:hover,
     select#startDateTime:hover,
     select#endDateTime:hover {
-        border-color: rgba(56, 189, 248, 0.5);
-        background-color: rgba(15, 23, 60, 0.98);
-        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
+        border-color: rgba(193, 232, 255, 0.15);
+        background-color: #052659;
+        box-shadow: 0 0 0 3px #5483B3;
     }
 
     .controls-card select.glass-input:focus,
     select#parameterSelect:focus,
     select#startDateTime:focus,
     select#endDateTime:focus {
-        border-color: #38bdf8;
-        box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
-        background-color: rgba(15, 23, 60, 0.98);
+        border-color: #C1E8FF;
+        box-shadow: 0 0 0 4px #5483B3;
+        background-color: #052659;
     }
 
     /* Style the native dropdown options */
     select#parameterSelect option,
     select#startDateTime option,
     select#endDateTime option {
-        background-color: #0f172a;
-        color: #e2e8f0;
+        background-color: #021024;
+        color: #FFFFFF;
         padding: 10px 16px;
     }
     
@@ -117,38 +120,39 @@
     /* Autocomplete Suggestions */
     .suggestions-list {
         position: absolute;
-        top: 100%;
+        top: calc(100% + 6px);
         left: 0;
         right: 0;
-        background: rgba(15, 23, 42, 0.95); /* Dark slate background */
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(56, 189, 248, 0.2); /* Light blue border */
-        border-radius: var(--radius-lg);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        background: #021024;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(193, 232, 255, 0.25);
+        border-radius: 16px;
+        box-shadow: 0 16px 40px rgba(2, 16, 36, 0.6);
         max-height: 250px;
         overflow-y: auto;
-        z-index: 100; /* Increased z-index to stay above other inputs */
-        margin-top: 8px;
+        z-index: 9999;
+        margin-top: 0;
         list-style: none;
         padding: 0;
-        color: #e2e8f0;
+        color: #FFFFFF;
     }
     
     .suggestions-list li {
         padding: 12px 20px;
         cursor: pointer;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(193, 232, 255, 0.15);
         transition: all 0.2s ease;
-        color: #cbd5e1;
+        color: #C1E8FF;
     }
 
     .suggestions-list li strong {
-        color: #f8fafc;
+        color: #FFFFFF;
         font-weight: 600;
     }
 
     .suggestions-list li small {
-        color: #94a3b8;
+        color: #7DA0CA;
         margin-left: 8px;
     }
     
@@ -157,12 +161,12 @@
     }
 
     .suggestions-list li:hover {
-        background: rgba(56, 189, 248, 0.15); /* Light blue hover background */
-        color: #38bdf8;
+        background: #5483B3; /* Light blue hover background */
+        color: #C1E8FF;
     }
 
     .suggestions-list li:hover strong {
-        color: #38bdf8;
+        color: #C1E8FF;
     }
 
     @media (max-width: 768px) {
